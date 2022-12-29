@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { useRegisterPageStateHook } from './register-hooks';
 
-import './register-page.module.scss';
+import './register-page-styles.scss';
 
 export const RegisterPage: FC = () => {
     const { name, onChangeName, email, onChangeEmail, password, onChangePassword } = useRegisterPageStateHook();
