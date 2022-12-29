@@ -31,7 +31,7 @@
     },
     "rules": {
         "no-unused-expressions": "warn",
-        "no-console": "warn",
+        "no-console": [0, { "allow": ["error"] }],
         "prefer-const": "warn",
         "quotes": ["warn", "single"],
         "max-len": ["warn", {"code": 120}],
@@ -44,6 +44,8 @@
         "no-multiple-empty-lines": ["warn", {"max": 1, "maxEOF": 1}],
         "object-curly-spacing": ["warn", "always"],
         "react/prop-types": "off",
-        "@typescript-eslint/ban-ts-comment": "off"
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "react/display-name": "off"
     }
 }
