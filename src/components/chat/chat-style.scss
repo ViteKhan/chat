@@ -1,0 +1,25 @@
+.Chat {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+
+  .ChatNavbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid black;
+    height: 50px;
+
+    img {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .Content {
+    padding: 10px;
+  }
+}
