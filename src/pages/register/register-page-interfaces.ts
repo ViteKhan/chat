@@ -1,8 +1,6 @@
-export type UseRegisterPageStateHook = () => ({
+export interface RegisterPageFormValues {
   name: string;
-  onChangeName: (event: React.ChangeEvent<HTMLInputElement>) => void;
   email: string;
-  onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   password: string;
-  onChangePassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
-});
+  passwordConfirmation: string;
+}

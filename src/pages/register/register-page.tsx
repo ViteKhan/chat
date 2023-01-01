@@ -1,45 +1,73 @@
 import React, { FC } from 'react';
+import { Box, Button, TextField, Typography } from '@material-ui/core';
 
-import { useRegisterPageStateHook } from './register-hooks';
-
-import './register-page-styles.scss';
+import { PasswordField } from 'components/password-field';
+import { useRegisterPageHook } from './register-page-hooks';
 
 export const RegisterPage: FC = () => {
-    const { name, onChangeName, email, onChangeEmail, password, onChangePassword } = useRegisterPageStateHook();
+  const {
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    values,
+  } = useRegisterPageHook();
 
-    return (
-        <div className="Container">
-            <div className="Wrapper">
-                <span className="Logo">My chat</span>
-                <span className="Title">Register</span>
-                <input
-                    type="text"
-                    placeholder="name"
-                    onChange={onChangeName}
-                    value={name}
-                />
-                <input
-                    type="email"
-                    placeholder="email"
-                    onChange={onChangeEmail}
-                    value={email}
-                />
-                <input
-                    type="password"
-                    placeholder="password"
-                    onChange={onChangePassword}
-                    value={password}
-                />
-                <input required style={{ display: 'none' }} type="file" id="file" />
-                <label htmlFor="file">
-                    <img src="" alt="fix this" />
-                    <span>Add an avatar</span>
-                </label>
-                <button onClick={() => console.log('register')}>
-                    Sign up
-                </button>
-                <p>Do you have an account? Login</p>
-            </div>
-        </div>
-    );
+  return (
+    <Box margin="100px auto" maxWidth="500px">
+        <Typography align="center" variant="h4">Oliva</Typography>
+        <Typography align="center" variant="h5">Register</Typography>
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          value={values.name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.name && !!errors.name}
+          helperText={touched.name ? errors.name : ''}
+          variant="outlined"
+          fullWidth
+        />
+        <TextField
+          id="email"
+          name="email"
+          label="Email"
+          value={values.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.email && !!errors.email}
+          helperText={touched.email ? errors.email : ''}
+          variant="outlined"
+          fullWidth
+        />
+        <PasswordField
+          id="password"
+          name="password"
+          label="Password"
+          value={values.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.password && !!errors.password}
+          helperText={touched.password ? errors.password : ''}
+          fullWidth
+        />
+        <PasswordField
+          id="passwordConfirmation"
+          name="passwordConfirmation"
+          label="Confirm password"
+          value={values.passwordConfirmation}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.passwordConfirmation && !!errors.passwordConfirmation}
+          helperText={touched.passwordConfirmation ? errors.passwordConfirmation : ''}
+          fullWidth
+        />
+        <Button onClick={() => handleSubmit()}>
+          Sign up
+        </Button>
+        <p>Do you have an account? Login</p>
+    </Box>
+  );
 };
