@@ -1,73 +1,53 @@
 import React, { FC } from 'react';
-import { Box, Button, TextField, Typography } from '@material-ui/core';
+import { Button, Heading, Text } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
 
-import { PasswordField } from 'components/password-field';
-import { useRegisterPageHook } from './register-page-hooks';
+import { createUserHandler } from './register-page-utils';
+import { FormWrapper } from 'components/form-wrapper';
+import { PasswordField, TextField } from 'components/fields';
+import { RegisterPageFormValues } from './register-page-interfaces';
+import { validationSchema } from 'common/validation-schemes';
 
 export const RegisterPage: FC = () => {
-  const {
-    errors,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    touched,
-    values,
-  } = useRegisterPageHook();
-
   return (
-    <Box margin="100px auto" maxWidth="500px">
-        <Typography align="center" variant="h4">Oliva</Typography>
-        <Typography align="center" variant="h5">Register</Typography>
-        <TextField
-          id="name"
-          name="name"
-          label="Name"
-          value={values.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.name && !!errors.name}
-          helperText={touched.name ? errors.name : ''}
-          variant="outlined"
-          fullWidth
-        />
-        <TextField
-          id="email"
-          name="email"
-          label="Email"
-          value={values.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.email && !!errors.email}
-          helperText={touched.email ? errors.email : ''}
-          variant="outlined"
-          fullWidth
-        />
-        <PasswordField
-          id="password"
-          name="password"
-          label="Password"
-          value={values.password}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.password && !!errors.password}
-          helperText={touched.password ? errors.password : ''}
-          fullWidth
-        />
-        <PasswordField
-          id="passwordConfirmation"
-          name="passwordConfirmation"
-          label="Confirm password"
-          value={values.passwordConfirmation}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.passwordConfirmation && !!errors.passwordConfirmation}
-          helperText={touched.passwordConfirmation ? errors.passwordConfirmation : ''}
-          fullWidth
-        />
-        <Button onClick={() => handleSubmit()}>
-          Sign up
-        </Button>
-        <p>Do you have an account? Login</p>
-    </Box>
+    <Formik<RegisterPageFormValues>
+      initialValues={{
+        displayName: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
+      }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => createUserHandler(values)}
+    >
+      <Form>
+        <FormWrapper>
+          <Heading>Chat</Heading>
+          <Text fontSize="lg">Register</Text>
+          <TextField
+            name="displayName"
+            label="Name"
+            placeholder="Name"
+          />
+          <TextField
+            name="email"
+            label="Email"
+            placeholder="Email"
+          />
+          <PasswordField
+            name="password"
+            label="Password"
+            placeholder="Password"
+          />
+          <PasswordField
+            name="passwordConfirmation"
+            label="Confirm password"
+            placeholder="Confirm password"
+          />
+          <Button type="submit">Sign up</Button>
+          <Text fontSize='xs'>Do you have an account? Login</Text>
+        </FormWrapper>
+      </Form>
+    </Formik>
   );
 };

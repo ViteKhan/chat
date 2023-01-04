@@ -1,5 +1,5 @@
 export interface RegisterPageFormValues {
-  name: string;
+  displayName: string;
   email: string;
   password: string;
   passwordConfirmation: string;
