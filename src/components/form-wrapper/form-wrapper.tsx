@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import { FC, memo } from 'react';
 import { Flex } from '@chakra-ui/react';
 
 import { FormWrapperProps } from './form-wrapper-interfaces';

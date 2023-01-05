@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import { FC, memo } from 'react';
 import { Field, FieldProps } from 'formik';
 import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 

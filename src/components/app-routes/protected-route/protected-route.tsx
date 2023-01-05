@@ -1,4 +1,4 @@
-import React, { FC, memo, useContext } from 'react';
+import { FC, memo, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { AuthContext } from 'common/api-context';

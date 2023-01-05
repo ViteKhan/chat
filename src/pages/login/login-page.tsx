@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Button, Heading, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
