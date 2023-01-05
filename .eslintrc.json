@@ -30,6 +30,8 @@
         }
     },
     "rules": {
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
         "no-unused-expressions": "warn",
         "no-console": [0, { "allow": ["error"] }],
         "prefer-const": "warn",
