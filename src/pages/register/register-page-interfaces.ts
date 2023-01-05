@@ -1,6 +1,9 @@
 export interface RegisterPageFormValues {
-  displayName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   passwordConfirmation: string;
 }
+
+export type FormatNameUtil = (name: string) => string;

@@ -6,6 +6,7 @@ import { Form, Formik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { auth, db } from 'firebase-config';
+import { formatName } from './register-page-utils';
 import { FormWrapper } from 'components/form-wrapper';
 import { getErrorMessage, getSuccessMessage } from 'utils';
 import { PasswordField, TextField } from 'components/fields';
@@ -17,7 +18,9 @@ export const RegisterPage: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const registerUserHandler = async (values: RegisterPageFormValues) => {
-    const { displayName, email, password } = values;
+    const { firstName, lastName, email, password } = values;
+    const displayName = `${formatName(firstName)} ${formatName(lastName)}`;
+
     try {
       setIsLoading(true);
       const response = await createUserWithEmailAndPassword(auth, email, password);
@@ -29,7 +32,7 @@ export const RegisterPage: FC = () => {
         displayName,
         email,
       });
-      // await setDoc(doc(db, 'userChats', response.user.uid), {});
+      await setDoc(doc(db, 'userChats', response.user.uid), {});
       getSuccessMessage('Registration was successful!');
       navigate(ROUTES.MAIN);
     } catch (error) {
@@ -47,7 +50,8 @@ export const RegisterPage: FC = () => {
   return (
     <Formik<RegisterPageFormValues>
       initialValues={{
-        displayName: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         passwordConfirmation: '',
@@ -60,9 +64,14 @@ export const RegisterPage: FC = () => {
           <Heading>Chat</Heading>
           <Text fontSize="lg">Register</Text>
           <TextField
-            name="displayName"
-            label="Name"
-            placeholder="Name"
+            name="firstName"
+            label="First name"
+            placeholder="First name"
+          />
+          <TextField
+            name="lastName"
+            label="Last name"
+            placeholder="Last name"
           />
           <TextField
             name="email"
