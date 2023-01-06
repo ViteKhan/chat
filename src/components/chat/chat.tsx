@@ -1,16 +1,15 @@
 import { FC } from 'react';
-import { signOut } from 'firebase/auth';
 
-import { auth } from 'firebase-config';
 import { Input } from '../input';
 import { Message } from '../message';
+import { UserMenu } from '../user-menu';
 
 import './chat-style.scss';
 
 export const Chat: FC = () => (
   <div className="Chat">
     <div className="ChatNavbar">
-      <button onClick={() => signOut(auth)}>logout</button>
+      <UserMenu/>
     </div>
     <div className="Content">
       <div className="Messages">

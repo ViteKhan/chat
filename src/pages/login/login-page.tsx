@@ -10,9 +10,11 @@ import { getErrorMessage, getSuccessMessage } from 'utils';
 import { LoginPageFormValues } from './login-page-interfaces';
 import { loginValidationSchema } from 'common/validation-schemes';
 import { PasswordField, TextField } from 'components/fields';
-import { ROUTES } from 'common/constants';
+import { ROUTES, TEXTS } from 'common/constants';
+import { useAppContext } from 'context/app-context';
 
 export const LoginPage: FC = () => {
+  const { language } = useAppContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const signInUserHandler = async (values: LoginPageFormValues) => {
@@ -20,11 +22,12 @@ export const LoginPage: FC = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setIsLoading(true);
-      getSuccessMessage('You have successfully logged in!');
+      getSuccessMessage(TEXTS[language].MESSAGES.SIGN_IN_SUCCESS);
       navigate(ROUTES.MAIN);
     } catch (error) {
       const errorMessage = (error as Error).message;
-      getErrorMessage(errorMessage);
+      console.error(errorMessage);
+      getErrorMessage(TEXTS[language].MESSAGES.SIGN_IN_ERROR);
     } finally {
       setIsLoading(false);
     }
@@ -40,25 +43,28 @@ export const LoginPage: FC = () => {
         email: '',
         password: '',
       }}
-      validationSchema={loginValidationSchema}
+      validationSchema={loginValidationSchema(language)}
       onSubmit={(values) => signInUserHandler(values)}
     >
       <Form>
         <FormWrapper>
           <Heading>Chat</Heading>
-          <Text fontSize="lg">Login</Text>
+          <Text fontSize="lg">{TEXTS[language].LABELS.LOGIN}</Text>
           <TextField
             name="email"
-            label="Email"
-            placeholder="Email"
+            label={TEXTS[language].FIELDS.EMAIL}
+            placeholder={TEXTS[language].FIELDS.EMAIL}
           />
           <PasswordField
             name="password"
-            label="Password"
-            placeholder="Password"
+            label={TEXTS[language].FIELDS.PASSWORD}
+            placeholder={TEXTS[language].FIELDS.PASSWORD}
           />
-          <Button type="submit">Sign in</Button>
-          <Text fontSize='xs'>You dont have an account? <Link to="/register">Register</Link></Text>
+          <Button type="submit">{TEXTS[language].BUTTONS.SIGN_IN}</Button>
+          <Text fontSize='xs'>
+            {TEXTS[language].LABELS.CREATE_ACCOUNT}
+            <Link to="/register">{TEXTS[language].LABELS.REGISTER}</Link>
+          </Text>
         </FormWrapper>
       </Form>
     </Formik>
