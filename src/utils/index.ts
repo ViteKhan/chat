@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { User } from 'firebase/auth';
 
 export const getSuccessMessage = (message: string) => (
   toast.success(message, {
@@ -11,3 +12,7 @@ export const getErrorMessage = (message: string) => (
     pauseOnHover: true,
   })
 );
+
+export const getCombinedId = (currentUser: User, user: User) => currentUser?.uid > user.uid
+  ? currentUser?.uid + user.uid
+  : user.uid + currentUser?.uid;

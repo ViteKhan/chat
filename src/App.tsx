@@ -1,17 +1,15 @@
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AppRoutes } from 'components/app-routes';
 import { AppToggler } from 'components/app-toogler';
-import { theme } from 'styles/theme';
 
 import './App.css';
 
 function App() {
   return (
-    <ChakraProvider>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <Box position="relative" w="100vw" h="100vh">
       <AppRoutes/>
       <AppToggler/>
       <ToastContainer
@@ -20,7 +18,7 @@ function App() {
         newestOnTop
         hideProgressBar
       />
-    </ChakraProvider>
+    </Box>
   );
 }
 

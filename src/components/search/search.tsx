@@ -15,7 +15,7 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 
 import { db } from 'firebase-config';
-import { getErrorMessage } from 'utils';
+import { getCombinedId, getErrorMessage } from 'utils';
 import { TEXTS } from 'common/constants';
 import { useApiContext, useLangContext } from 'context';
 
@@ -46,20 +46,13 @@ export const Search: FC = () => {
   };
 
   const selectUserHandler = async (user) => {
-    //check whether the group(chats in firestore) exists, if not create
-    const combinedId =
-      currentUser?.uid > user.uid
-        ? currentUser?.uid + user.uid
-        : user.uid + currentUser?.uid;
+    const combinedId = getCombinedId(currentUser, user);
 
     try {
       const res = await getDoc(doc(db, 'chats', combinedId));
 
       if (!res.exists()) {
-        //create a chat in chats collection
         await setDoc(doc(db, 'chats', combinedId), { messages: [] });
-
-        //create user chats
         await updateDoc(doc(db, 'userChats', currentUser.uid), {
           [combinedId + '.userInfo']: {
             uid: user.uid,
