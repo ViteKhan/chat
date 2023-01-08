@@ -19,37 +19,38 @@ import { getErrorMessage } from 'utils';
 import { TEXTS } from 'common/constants';
 import { useApiContext, useLangContext } from 'context';
 
+// todo refactor this file
 export const Search: FC = () => {
   const { language } = useLangContext();
   const currentUser = useApiContext();
   const [searchText, setSearchText] = useState<string>('');
-  const [user, setUser] = useState<DocumentData | null>(null);
+  const [users, setUsers] = useState<DocumentData[]>([]);
+  const [notFound, setNotFound] = useState<boolean>(false);
+
   const onChange = (event) => setSearchText(event.target.value);
   const searchUserHandler = async () => {
-    const userQuery = query(collection(db, 'users'), where('displayName', '==', searchText));
-    try {
-      const querySnapshot = await getDocs(userQuery);
-      querySnapshot.forEach((doc) => {
-        const foundUser = doc.data();
-        console.log(foundUser);
-        setUser(foundUser);
-      });
-    } catch (err) {
-      const errorMessage = (err as Error).message;
-      getErrorMessage(errorMessage);
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('displayName', '==', searchText));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map(doc => doc.data());
+    if (data.length) {
+      setUsers(data);
+      setNotFound(false);
+    } else {
+      setUsers([]);
+      setNotFound(true);
     }
   };
   const onKeyDown = (event) => {
     return event.code === 'Enter' && searchUserHandler();
   };
 
-  const selectUserHandler = async () => {
+  const selectUserHandler = async (user) => {
     //check whether the group(chats in firestore) exists, if not create
     const combinedId =
-      // @ts-ignore
-      currentUser?.uid > user?.uid
-        ? currentUser?.uid + user?.uid
-        : user?.uid + currentUser?.uid;
+      currentUser?.uid > user.uid
+        ? currentUser?.uid + user.uid
+        : user.uid + currentUser?.uid;
 
     try {
       const res = await getDoc(doc(db, 'chats', combinedId));
@@ -59,16 +60,16 @@ export const Search: FC = () => {
         await setDoc(doc(db, 'chats', combinedId), { messages: [] });
 
         //create user chats
-        await updateDoc(doc(db, 'userChats', user?.uid), {
+        await updateDoc(doc(db, 'userChats', currentUser.uid), {
           [combinedId + '.userInfo']: {
-            uid: currentUser?.uid,
-            displayName: currentUser?.displayName,
-            photoURL: currentUser?.photoURL,
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
           },
           [combinedId + '.date']: serverTimestamp(),
         });
 
-        await updateDoc(doc(db, 'userChats', user?.uid), {
+        await updateDoc(doc(db, 'userChats', user.uid), {
           [combinedId + '.userInfo']: {
             uid: currentUser?.uid,
             displayName: currentUser?.displayName,
@@ -82,7 +83,7 @@ export const Search: FC = () => {
       getErrorMessage(errorMessage);
     }
 
-    setUser(null);
+    setUsers([]);
     setSearchText('');
   };
 
@@ -101,7 +102,7 @@ export const Search: FC = () => {
           <SearchIcon boxSize="12px"/>
         </InputRightElement>
       </InputGroup>
-      {!user &&
+      {!users.length && notFound &&
         <Box
           position="absolute"
           border="1px solid"
@@ -112,18 +113,24 @@ export const Search: FC = () => {
           {TEXTS[language].MESSAGES.NOT_FOUND_USER}
         </Box>
       }
-      {user &&
-        <Flex
-          position="absolute"
-          border="1px solid"
-          w="170px"
-          top="40px"
-          wordBreak="break-word"
-          onClick={selectUserHandler}
-        >
-          <img src={user.photoUrl} alt={user.displayName}/>
-          {user.displayName}
-        </Flex>
+      {!!users.length && !notFound &&
+        (users.map(user => {
+          const { displayName, uid, photoURL } = user;
+          return (
+            <Flex
+              key={uid}
+              position="absolute"
+              border="1px solid"
+              w="170px"
+              top="40px"
+              wordBreak="break-word"
+              onClick={() => selectUserHandler(user)}
+            >
+              <img src={photoURL} alt={displayName}/>
+              {displayName}
+            </Flex>
+          );
+        }))
       }
     </Flex>
   );

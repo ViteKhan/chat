@@ -34,6 +34,7 @@ export const RegisterPage: FC = () => {
         uid: response.user.uid,
         displayName,
         email,
+        photoURL: response.user.photoURL,
       });
       await setDoc(doc(db, 'userChats', response.user.uid), {});
       getSuccessMessage(TEXTS[language].MESSAGES.SIGN_UP_SUCCESS);

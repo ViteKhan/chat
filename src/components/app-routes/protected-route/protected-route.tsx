@@ -5,6 +5,7 @@ import { Loader } from 'components/loader';
 import { ProtectedRouteProps } from './protected-route-interfaces';
 import { useApiContext } from 'context';
 
+// todo fix this file and api-context
 export const ProtectedRoute: FC<ProtectedRouteProps> = memo(({ children }) => {
   const currentUser = useApiContext();
 

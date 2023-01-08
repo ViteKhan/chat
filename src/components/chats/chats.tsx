@@ -1,35 +1,45 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+
+import { db } from 'firebase-config';
+import { useApiContext } from 'context';
 
 import './chats-styles.scss';
 
-const CHATS = [
-  {
-    img: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp',
-    name: 'Viktor',
-    message: 'Hello',
-  },
-  {
-    img: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp',
-    name: 'Viktor',
-    message: 'Hello',
-  },
-  {
-    img: 'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp',
-    name: 'Viktor',
-    message: 'Hello',
-  },
-];
+export const Chats: FC = () => {
+  const [chats, setChats] = useState<DocumentData>();
+  const currentUser = useApiContext();
 
-export const Chats: FC = () => (
-  <div className="Chats">
-    {CHATS.map((chat, index) => (
-      <div key={index} className="UserChat">
-        <img src={chat.img} alt="user-avatar" />
-        <div className="UserChatInfo">
-          <span>{chat.name}</span>
-          <p>{chat.message}</p>
-        </div>
-      </div>
-    ))}
-</div>
-);
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), doc => {
+        if (doc.exists()) {
+          setChats(doc.data());
+        }
+      });
+
+      return unsub;
+    };
+
+    if (currentUser.uid) {
+      getChats();
+    }
+
+  }, [currentUser.uid]);
+
+  return (
+    <div className="Chats">
+      {chats && Object.entries(chats).sort((a, b)=> b[1].date - a[1].date)
+        .map(([id, data]) => (
+          <div key={id} className="UserChat">
+            <img src={data.userInfo.photoURL} alt="user-avatar" />
+            <div className="UserChatInfo">
+              <span>{data.userInfo.displayName}</span>
+              {/*<p>{chat[1].userInfo.displayName}</p>*/}
+            </div>
+          </div>
+        )
+      )}
+    </div>
+  );
+};
