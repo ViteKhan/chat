@@ -7,21 +7,22 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from 'firebase-config';
 import { FormWrapper } from 'components/form-wrapper';
 import { getErrorMessage, getSuccessMessage } from 'utils';
+import { Loader } from 'components/loader';
 import { LoginPageFormValues } from './login-page-interfaces';
 import { loginValidationSchema } from 'common/validation-schemes';
 import { PasswordField, TextField } from 'components/fields';
 import { ROUTES, TEXTS } from 'common/constants';
-import { useAppContext } from 'context/app-context';
+import { useLangContext } from 'context';
 
 export const LoginPage: FC = () => {
-  const { language } = useAppContext();
+  const { language } = useLangContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const signInUserHandler = async (values: LoginPageFormValues) => {
     const { email, password } = values;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
       setIsLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
       getSuccessMessage(TEXTS[language].MESSAGES.SIGN_IN_SUCCESS);
       navigate(ROUTES.MAIN);
     } catch (error) {
@@ -34,7 +35,7 @@ export const LoginPage: FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader/>;
   }
 
   return (

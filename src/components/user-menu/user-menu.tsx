@@ -3,10 +3,10 @@ import { Flex, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { signOut } from 'firebase/auth';
 
 import { auth } from 'firebase-config';
-import { useAppContext } from 'context/app-context';
+import { useApiContext } from 'context';
 
 export const UserMenu: FC = () => {
-  const { currentUser } = useAppContext();
+  const currentUser = useApiContext();
   return (
     <Menu>
       <MenuButton>

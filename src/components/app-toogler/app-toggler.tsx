@@ -3,11 +3,11 @@ import { Flex, IconButton, Select, useColorMode } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 import { LANGUAGES } from 'common/constants';
-import { useAppContext } from 'context/app-context';
+import { useLangContext } from 'context';
 
 export const AppToggler: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { language, changeLanguageHandler } = useAppContext();
+  const { language, changeLanguageHandler } = useLangContext();
   const icon = colorMode === 'light' ? <MoonIcon/> : <SunIcon/>;
 
   return (

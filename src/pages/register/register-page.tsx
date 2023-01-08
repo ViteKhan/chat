@@ -9,14 +9,15 @@ import { auth, db } from 'firebase-config';
 import { formatName } from './register-page-utils';
 import { FormWrapper } from 'components/form-wrapper';
 import { getErrorMessage, getSuccessMessage } from 'utils';
+import { Loader } from 'components/loader';
 import { PasswordField, TextField } from 'components/fields';
 import { RegisterPageFormValues } from './register-page-interfaces';
 import { registerValidationSchema } from 'common/validation-schemes';
 import { ROUTES, TEXTS } from 'common/constants';
-import { useAppContext } from 'context/app-context';
+import { useLangContext } from 'context';
 
 export const RegisterPage: FC = () => {
-  const { language } = useAppContext();
+  const { language } = useLangContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const registerUserHandler = async (values: RegisterPageFormValues) => {
@@ -24,8 +25,8 @@ export const RegisterPage: FC = () => {
     const displayName = `${formatName(firstName)} ${formatName(lastName)}`;
 
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password);
       setIsLoading(true);
+      const response = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(response.user, {
         displayName,
       });
@@ -46,7 +47,7 @@ export const RegisterPage: FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader/>;
   }
 
   return (

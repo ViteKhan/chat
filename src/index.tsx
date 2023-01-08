@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
+import { ApiContextProvider, LangContextProvider } from 'context';
 import App from './App';
 import './firebase-config';
 
@@ -11,6 +12,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <BrowserRouter>
-        <App/>
+      <ApiContextProvider>
+        <LangContextProvider>
+          <App/>
+        </LangContextProvider>
+      </ApiContextProvider>
     </BrowserRouter>
 );

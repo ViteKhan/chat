@@ -18,6 +18,7 @@ export const TEXTS = {
       SIGN_IN_SUCCESS: 'You have successfully logged in!',
       SIGN_UP_ERROR: 'Something went wrong!',
       SIGN_IN_ERROR: 'Incorrect email or password',
+      NOT_FOUND_USER: 'User not found!',
     },
     FIELDS: {
       FIRST_NAME: 'First name',
@@ -25,6 +26,7 @@ export const TEXTS = {
       EMAIL: 'Email',
       PASSWORD: 'Password',
       CONFIRM_PASSWORD: 'Confirm password',
+      SEARCH: 'Search...',
     },
     BUTTONS: {
       SIGN_UP: 'Sign up',
@@ -49,6 +51,7 @@ export const TEXTS = {
       SIGN_IN_SUCCESS: 'Вы успешно вошли в систему!',
       SIGN_UP_ERROR: 'Что-то пошло не так!',
       SIGN_IN_ERROR: 'Эл. почта или пароль введены не верно!',
+      NOT_FOUND_USER: 'Пользователь не найден',
     },
     FIELDS: {
       FIRST_NAME: 'Имя',
@@ -56,6 +59,7 @@ export const TEXTS = {
       EMAIL: 'Электронная почта',
       PASSWORD: 'Пароль',
       CONFIRM_PASSWORD: 'Подтвердите пароль',
+      SEARCH: 'Поиск...',
     },
     BUTTONS: {
       SIGN_UP: 'Зарегистрироваться',
